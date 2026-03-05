@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | Hosana City Housing{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+  <div>
+    <h2 class="mb-1">Householder Registry</h2>
+    <p class="text-muted mb-0">Hosana City · 3 Menders · 10 Kebeles</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('main.add_householder') }}">+ Add Householder</a>
+</div>
+
+<div class="card mb-3 shadow-sm">
+  <div class="card-body">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-md-8">
+        <label class="form-label">Search by house number or name</label>
+        <input class="form-control" name="q" value="{{ query }}" placeholder="Example: H-103 or Abebe" />
+      </div>
+      <div class="col-md-2 d-grid">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </div>
+      <div class="col-md-2 d-grid">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary">Reset</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card mb-4 shadow-sm">
+  <div class="card-body">
+    <h5>Upload CSV Data</h5>
+    <form method="post" action="{{ url_for('main.upload_householders') }}" enctype="multipart/form-data" class="row g-2">
+      <div class="col-md-10">
+        <input class="form-control" name="file" type="file" accept=".csv" required />
+      </div>
+      <div class="col-md-2 d-grid">
+        <button class="btn btn-success" type="submit">Upload</button>
+      </div>
+    </form>
+    <small class="text-muted">CSV headers: house_number, first_name, last_name, phone, mender, kebele, family_size, notes</small>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>House Number</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Mender</th>
+          <th>Kebele</th>
+          <th>Family Size</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for holder in holders %}
+          <tr>
+            <td>{{ holder.house_number }}</td>
+            <td>{{ holder.full_name }}</td>
+            <td>{{ holder.phone or '-' }}</td>
+            <td>{{ holder.mender }}</td>
+            <td>{{ holder.kebele }}</td>
+            <td>{{ holder.family_size }}</td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('main.edit_householder', holder_id=holder.id) }}">Edit</a>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">No records found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
