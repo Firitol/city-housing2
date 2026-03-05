@@ -61,11 +61,27 @@ house_number,first_name,last_name,phone,mender,kebele,family_size,notes
 
 Only valid rows are imported (unique house number + valid mender/kebele values).
 
+
+## Neon Database Table Creation
+
+If you want to create tables directly on a Neon PostgreSQL database, run:
+
+```bash
+psql "$DATABASE_URL" -f db/schema_neon.sql
+```
+
+The script creates:
+- `users`
+- `householders`
+- indexes for search fields
+- an update trigger for `updated_at`
+
 ## Render Deployment
 
 This repository includes:
 
 - `render.yaml` (web service + managed PostgreSQL database)
+- `Procfile` (`gunicorn wsgi:app`)
 - `Procfile` (`gunicorn app:app`)
 
 ### Deploy steps
