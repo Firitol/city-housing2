@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% if holder %}
+  {% set page_title = 'Edit Householder' %}
+{% else %}
+  {% set page_title = 'Add Householder' %}
+{% endif %}
+{% block title %}{{ page_title }} | Hosana City Housing{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h3 class="mb-3">{{ page_title }}</h3>
+        <form method="post" class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">House Number *</label>
+            <input class="form-control" name="house_number" value="{{ holder.house_number if holder else '' }}" required />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Mender *</label>
+            <select class="form-select" name="mender" required>
+              {% for mender in menders %}
+                <option value="{{ mender }}" {% if holder and holder.mender == mender %}selected{% endif %}>{{ mender }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Kebele *</label>
+            <select class="form-select" name="kebele" required>
+              {% for kebele in kebeles %}
+                <option value="{{ kebele }}" {% if holder and holder.kebele == kebele %}selected{% endif %}>{{ kebele }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">First Name *</label>
+            <input class="form-control" name="first_name" value="{{ holder.first_name if holder else '' }}" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Last Name *</label>
+            <input class="form-control" name="last_name" value="{{ holder.last_name if holder else '' }}" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input class="form-control" name="phone" value="{{ holder.phone if holder else '' }}" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Family Size</label>
+            <input class="form-control" type="number" min="1" name="family_size" value="{{ holder.family_size if holder else 1 }}" />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" name="notes" rows="3">{{ holder.notes if holder else '' }}</textarea>
+          </div>
+          <div class="col-12 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('main.dashboard') }}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
