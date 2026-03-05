@@ -82,6 +82,7 @@ This repository includes:
 
 - `render.yaml` (web service + managed PostgreSQL database)
 - `Procfile` (`gunicorn wsgi:app`)
+- `Procfile` (`gunicorn app:app`)
 
 ### Deploy steps
 
